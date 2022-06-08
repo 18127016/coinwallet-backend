@@ -20,6 +20,7 @@ public class WebCustomObjectMapper extends ObjectMapper {
             super("ElcaCustomModule", Version.unknownVersion());
             addDeserializer(Chart.class, new ChartDeserialize());
             addDeserializer(MarketCap.class, new MarketCapDeserialize());
+            addDeserializer(TrendJson.class,new TrendDeserialize());
         }
     }
 }

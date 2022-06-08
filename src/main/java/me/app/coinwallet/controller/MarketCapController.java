@@ -36,4 +36,14 @@ public class MarketCapController {
                 .map(marketCapMapper::toMarketCapDto)
                 .collect(Collectors.toList()));
     }
+    @GetMapping("trend")
+    public ResponseEntity<List<MarketCapDto>> allTrend(){
+        return ResponseEntity.ok(marketCapService.getTrend().stream()
+                .map(marketCapMapper::toMarketCapDto)
+                .collect(Collectors.toList()));
+    }
+    @GetMapping("loadTrend")
+    public void loadTrend(){
+        marketCapService.loadTrend();
+    }
 }

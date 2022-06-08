@@ -24,4 +24,10 @@ create table CHART(
     constraint fk_chart foreign key (cap_id) references MARKETCAP (id),
     version integer default 0
 );
+create table TREND(
+    id bigint primary key,
+    cap_id bigint,
+    constraint fk_trend foreign key (cap_id) references MARKETCAP(id),
+    version integer default 0
+)
 

@@ -8,4 +8,6 @@ public interface MarketCapService {
     List<MarketCap> getAllCap();
     List<MarketCap> getSomeCap(int count);
     void load();
+    void loadTrend();
+    List<MarketCap> getTrend();
 }

@@ -7,4 +7,5 @@ import java.util.List;
 public interface MarketCapCustomRepository {
     List<MarketCap> getAll();
     List<MarketCap> getSome(int count);
+    List<MarketCap> getTrend();
 }

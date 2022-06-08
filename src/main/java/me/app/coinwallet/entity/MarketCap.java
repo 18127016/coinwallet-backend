@@ -51,6 +51,9 @@ public class MarketCap extends AbstractEntity {
     @OneToOne(mappedBy = "marketCap", cascade = CascadeType.ALL)
     private Chart chart;
 
+    @OneToOne(mappedBy = "marketCap",cascade = CascadeType.ALL)
+    private Trend trend;
+
     public void queryChart(){
         registerEvent(new QueryChartEvent(this));
     }
