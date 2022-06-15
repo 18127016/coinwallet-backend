@@ -10,7 +10,9 @@ import java.util.List;
 public class MarketCapRepositoryImpl extends AbstractRepositoryImpl<MarketCap> implements MarketCapCustomRepository {
     @Override
     public List<MarketCap> getAll() {
-        return selectFrom(QMarketCap.marketCap).fetch();
+        return selectFrom(QMarketCap.marketCap)
+                .orderBy(QMarketCap.marketCap.marketCapRank.desc())
+                .fetch();
     }
 
     @Override
