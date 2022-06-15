@@ -7,7 +7,9 @@ import me.app.coinwallet.constant.Constant;
 import me.app.coinwallet.entity.MarketCap;
 import me.app.coinwallet.entity.Trend;
 import me.app.coinwallet.jackson.TrendJson;
+import me.app.coinwallet.repository.ChartRepository;
 import me.app.coinwallet.repository.MarketCapRepository;
+import me.app.coinwallet.repository.TrendRepository;
 import me.app.coinwallet.service.ChartService;
 import me.app.coinwallet.service.MarketCapService;
 import okhttp3.*;
@@ -17,12 +19,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = {Throwable.class})
 @RequiredArgsConstructor
 public class MarketCapServiceImpl implements MarketCapService {
     private final MarketCapRepository marketCapRepository;
+    private final TrendRepository trendRepository;
     private final ChartService chartService;
     private final OkHttpClient client= Constant.HTTP_CLIENT;
     private final ObjectMapper objectMapper;
@@ -42,7 +47,7 @@ public class MarketCapServiceImpl implements MarketCapService {
         HttpUrl.Builder builder = MARKET_CAP_URL.newBuilder();
         builder.addQueryParameter(CURRENCY_QUERY_PARAM, currency);
         builder.addQueryParameter(ORDER_QUERY_PARAM, "market_cap_desc");
-        builder.addQueryParameter(PAGE_CAP_QUERY_PARAM, "50");
+        builder.addQueryParameter(PAGE_CAP_QUERY_PARAM, "20");
         builder.addQueryParameter(PAGE_NUM_QUERY_PARAM, "1");
         builder.addQueryParameter(SPARKLINE_QUERY_PARAM, "false");
         builder.addQueryParameter(IDS_QUERY_PARAM, ids!=null?String.join(",",ids):null);
@@ -78,8 +83,9 @@ public class MarketCapServiceImpl implements MarketCapService {
                 try {
                     if (response.isSuccessful()) {
                         TrendJson data = parseTrend(response.body().string());
+                        trendRepository.saveAll(data.getCoins().stream().map(Trend::new).collect(Collectors.toList()));
                         HttpUrl url=url("usd",data.getCoins());
-                        getMarketCapFromSource(url,true);
+                        getMarketCapFromSource(url);
                     }
                 } catch (final IOException x) {
 
@@ -93,7 +99,7 @@ public class MarketCapServiceImpl implements MarketCapService {
         });
     }
 
-    private void getMarketCapFromSource(HttpUrl url, boolean isTrend) {
+    private void getMarketCapFromSource(HttpUrl url) {
 
         final Request.Builder request = new Request.Builder();
         request.url(url);
@@ -110,15 +116,18 @@ public class MarketCapServiceImpl implements MarketCapService {
                 try {
                     if (response.isSuccessful()) {
                         List<MarketCap> data = parseMarketCap(response.body().string());
-                        marketCapRepository.deleteAll();
-//                        marketCapRepository.saveAll(data);
+                        Map<String, MarketCap> all = marketCapRepository.getAll().stream()
+                                .collect(Collectors.toMap(MarketCap::getCoinId,v->v));
+
                         data.forEach(cap->{
-                            cap.queryChart();
-                            if(isTrend){
-                                cap.setTrend(new Trend(cap));
+                            if(all.containsKey(cap.getCoinId())){
+                                MarketCap existed = all.get(cap.getCoinId());
+                                existed.update(cap);
+                                System.out.println("counet");
+                                chartService.load(existed);
+                            } else {
+                                chartService.load(cap);
                             }
-                            marketCapRepository.save(cap);
-//                            chartService.load(cap);
                         });
                     }
                 } catch (final IOException x) {
@@ -137,17 +146,31 @@ public class MarketCapServiceImpl implements MarketCapService {
 
     @Override
     public void load() {
-        getMarketCapFromSource(url("usd",null),false);
+        getMarketCapFromSource(url("usd",null));
     }
 
     @Override
     public void loadTrend() {
+//        deleteAllTrend();
         getTrendFromSource();
+//        updateTrendChart();
     }
 
     @Override
     public List<MarketCap> getTrend() {
         return marketCapRepository.getTrend();
+    }
+
+    @Override
+    public void deleteAllTrend() {
+        trendRepository.deleteAll();
+    }
+
+    @Override
+    public void updateTrendChart() {
+        List<MarketCap> trends= marketCapRepository.getTrend();
+        System.out.println("size"+trends.size());
+        trends.forEach(chartService::load);
     }
 
     @Override

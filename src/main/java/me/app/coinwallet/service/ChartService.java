@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ChartService {
     List<Chart> getAllChart();
-    Chart getChartById(MarketCap marketCap);
+    Chart getChartByMarketCap(MarketCap marketCap);
     void load(MarketCap marketCap);
     void loadAll(List<MarketCap> marketCaps);
 }

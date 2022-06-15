@@ -10,7 +10,7 @@ public class MarketCapDto {
     public String name;
     public String image;
     public Double currentPrice;
-    public Long marketCap;
+    public Long marketCapValue;
     public Integer marketCapRank;
     public Double totalVolume;
     public Double high;

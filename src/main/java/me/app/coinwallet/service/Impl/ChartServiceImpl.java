@@ -6,6 +6,7 @@ import me.app.coinwallet.constant.Constant;
 import me.app.coinwallet.entity.Chart;
 import me.app.coinwallet.entity.MarketCap;
 import me.app.coinwallet.repository.ChartRepository;
+import me.app.coinwallet.repository.MarketCapRepository;
 import me.app.coinwallet.service.ChartService;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = {Throwable.class})
 @RequiredArgsConstructor
 public class ChartServiceImpl implements ChartService {
     private final ChartRepository chartRepository;
+    private final MarketCapRepository marketCapRepository;
     private final OkHttpClient client= Constant.HTTP_CLIENT;
     private final ObjectMapper objectMapper;
 
@@ -63,8 +67,20 @@ public class ChartServiceImpl implements ChartService {
                     if (response.isSuccessful()) {
 //                        System.out.println(response.body().string());
                         Chart data = parseChart(response.body().string());
-                        data.setMarketCap(cap);
-                        chartRepository.save(data);
+                        Map<Long, Chart> all = chartRepository.getAll().stream()
+                                .collect(Collectors.toMap(Chart::getId,v->v));
+
+                        if(cap.getChart()!=null && all.containsKey(cap.getChart().getId())){
+                            Chart existed= all.get(cap.getChart().getId());
+                            existed.setPointList(data.getPointList());
+                            cap.setChart(existed);
+                        }
+                        else {
+                            cap.setChart(data);
+                        }
+
+                        System.out.println("capId:"+cap.getId());
+                        marketCapRepository.save(cap);
                     } else {
 //                        new Logger("http status {} {} when fetching exchange rates from {}", response.code(),
 //                                response.message(),chartUrl("usd",id));
@@ -99,7 +115,7 @@ public class ChartServiceImpl implements ChartService {
     }
 
     @Override
-    public Chart getChartById(MarketCap marketCap) {
-        return chartRepository.findById(marketCap).orElse(null);
+    public Chart getChartByMarketCap(MarketCap marketCap) {
+        return chartRepository.getByCap(marketCap);
     }
 }

@@ -4,9 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.app.coinwallet.service.QueryChartEvent;
-import org.hibernate.annotations.CreationTimestamp;
+import me.app.coinwallet.service.QueryTrendEvent;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -44,21 +43,17 @@ public class MarketCap extends AbstractEntity {
     @Column(name = "current_price")
     private Double currentPrice;
     @Column(name = "market_cap")
-    private Long marketCap;
+    private Long marketCapValue;
     @Column(name = "market_cap_rank")
     private Integer marketCapRank;
 
-    @OneToOne(mappedBy = "marketCap", cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Chart.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "chart", referencedColumnName = "id")
     private Chart chart;
 
-    @OneToOne(mappedBy = "marketCap",cascade = CascadeType.ALL)
-    private Trend trend;
 
-    public void queryChart(){
-        registerEvent(new QueryChartEvent(this));
-    }
 
-    public MarketCap(Long id,String coinId, String name, String symbol, Float fluctuation, Double high, Double low, Double totalVolume, String image, Date capTimeStamp, Double currentPrice, Long marketCap, Integer marketCapRank) {
+    public MarketCap(Long id, String coinId, String name, String symbol, Float fluctuation, Double high, Double low, Double totalVolume, String image, Date capTimeStamp, Double currentPrice, Long marketCapValue, Integer marketCapRank) {
         this.id = id;
         this.coinId=coinId;
         this.name = name;
@@ -70,7 +65,18 @@ public class MarketCap extends AbstractEntity {
         this.image = image;
         this.capTimeStamp = capTimeStamp;
         this.currentPrice = currentPrice;
-        this.marketCap = marketCap;
+        this.marketCapValue = marketCapValue;
         this.marketCapRank = marketCapRank;
+    }
+
+    public void update(MarketCap another){
+        this.fluctuation = another.fluctuation;
+        this.high = another.high;
+        this.low = another.low;
+        this.totalVolume = another.totalVolume;
+        this.currentPrice = another.currentPrice;
+        this.marketCapValue = another.marketCapValue;
+        this.marketCapRank = another.marketCapRank;
+//        this.trend = another.trend;
     }
 }

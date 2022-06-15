@@ -17,24 +17,23 @@ public class Chart extends AbstractEntity{
     @GeneratedValue
     Long id;
 
-    @OneToOne(targetEntity = MarketCap.class)
-    @JoinColumn(name = "cap_id",referencedColumnName = "id")
-    MarketCap marketCap;
+//    @OneToOne(targetEntity = MarketCap.class)
+//    @JoinColumn(name = "cap_id",referencedColumnName = "id")
+//    MarketCap marketCap;
 
     @Column(name = "point_list")
     String pointList;
 
-    @Column
-    Integer size;
+    @Column(name="coin_id")
+    String  coinId;
 
-    public Chart(Long id, MarketCap marketCap, String pointList, Integer size) {
-        this(marketCap, pointList, size);
+    public Chart(Long id, String pointList, String coinId) {
+        this( pointList, coinId);
         this.id = id;
     }
 
-    public Chart(MarketCap marketCap, String pointList, Integer size) {
-        this.marketCap = marketCap;
+    public Chart(String pointList, String  coinId) {
         this.pointList = pointList;
-        this.size = size;
+        this.coinId= coinId;
     }
 }

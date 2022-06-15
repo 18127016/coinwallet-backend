@@ -10,20 +10,20 @@ import java.util.List;
 public class MarketCapRepositoryImpl extends AbstractRepositoryImpl<MarketCap> implements MarketCapCustomRepository {
     @Override
     public List<MarketCap> getAll() {
-        return selectFrom(QMarketCap.marketCap1).fetch();
+        return selectFrom(QMarketCap.marketCap).fetch();
     }
 
     @Override
     public List<MarketCap> getSome(int count) {
-        return selectFrom(QMarketCap.marketCap1)
-                .orderBy(QMarketCap.marketCap1.marketCapRank.asc())
+        return selectFrom(QMarketCap.marketCap)
+                .orderBy(QMarketCap.marketCap.marketCapRank.asc())
                 .limit(count).fetch();
     }
 
     @Override
     public List<MarketCap> getTrend() {
-        return selectFrom(QMarketCap.marketCap1).innerJoin(QTrend.trend)
-                .on(QTrend.trend.marketCap.eq(QMarketCap.marketCap1))
+        return selectFrom(QMarketCap.marketCap).join(QTrend.trend)
+                .on(QTrend.trend.coinId.eq(QMarketCap.marketCap.coinId))
                 .fetch();
     }
 }

@@ -6,6 +6,7 @@ import me.app.coinwallet.entity.MarketCap;
 import me.app.coinwallet.mapper.MarketCapMapper;
 import me.app.coinwallet.repository.MarketCapRepository;
 import me.app.coinwallet.service.ChartService;
+import me.app.coinwallet.service.ExchangeRateService;
 import me.app.coinwallet.service.MarketCapService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MarketCapController {
     private final MarketCapService marketCapService;
-    private final ChartService chartService;
+    private final ExchangeRateService exchangeRateService;
     private final MarketCapMapper marketCapMapper;
 
     @GetMapping("/load")
@@ -44,6 +45,8 @@ public class MarketCapController {
     }
     @GetMapping("loadTrend")
     public void loadTrend(){
+        marketCapService.deleteAllTrend();
         marketCapService.loadTrend();
     }
+
 }

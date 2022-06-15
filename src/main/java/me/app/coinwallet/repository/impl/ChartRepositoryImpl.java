@@ -3,6 +3,7 @@ package me.app.coinwallet.repository.impl;
 import me.app.coinwallet.entity.Chart;
 import me.app.coinwallet.entity.MarketCap;
 import me.app.coinwallet.entity.QChart;
+import me.app.coinwallet.entity.QMarketCap;
 import me.app.coinwallet.repository.ChartRepository;
 import me.app.coinwallet.repository.custom.ChartCustomRepository;
 
@@ -17,7 +18,8 @@ public class ChartRepositoryImpl extends AbstractRepositoryImpl<Chart> implement
     }
 
     @Override
-    public Chart getById(MarketCap cap) {
-        return selectFrom(QChart.chart).where(QChart.chart.marketCap.eq(cap)).fetchOne();
+    public Chart getByCap(MarketCap cap) {
+        return selectFrom(QChart.chart).join(QMarketCap.marketCap).on(QChart.chart.eq(QMarketCap.marketCap.chart))
+                .where(QMarketCap.marketCap.eq(cap)).fetchFirst();
     }
 }

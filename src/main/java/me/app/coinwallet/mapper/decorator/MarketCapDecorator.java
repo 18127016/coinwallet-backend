@@ -21,6 +21,7 @@ public class MarketCapDecorator implements MarketCapMapper{
     public MarketCapDto toMarketCapDto(MarketCap marketCap) {
         MarketCapDto result = delegate.toMarketCapDto(marketCap);
         result.setChartDto(chartMapper.toChartDto(marketCap.getChart()));
+//        result.setChartDto(chartMapper.toChartDto(marketCap.getChart()));
         return result;
     }
 }

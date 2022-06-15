@@ -16,16 +16,15 @@ public class Trend extends AbstractEntity{
     @GeneratedValue
     Long id;
 
-    @OneToOne(targetEntity = MarketCap.class)
-    @JoinColumn(name = "cap_id",referencedColumnName = "id")
-    private MarketCap marketCap;
+    @Column(name = "coin_id")
+    private String coinId;
 
-    public Trend( MarketCap marketCap) {
-        this.marketCap = marketCap;
+    public Trend( String coinId) {
+        this.coinId = coinId;
     }
 
-    public Trend(Long id, MarketCap marketCap) {
-        this(marketCap);
+    public Trend(Long id, String coinId) {
+        this(coinId);
         this.id = id;
     }
 }

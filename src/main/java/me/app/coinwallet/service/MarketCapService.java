@@ -10,4 +10,6 @@ public interface MarketCapService {
     void load();
     void loadTrend();
     List<MarketCap> getTrend();
+    void deleteAllTrend();
+    void updateTrendChart();
 }

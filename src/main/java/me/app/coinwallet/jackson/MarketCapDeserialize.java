@@ -1,6 +1,5 @@
 package me.app.coinwallet.jackson;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,7 +21,7 @@ public class MarketCapDeserialize extends StdDeserializer<MarketCap> {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         MarketCap cap= new MarketCap();
         cap.setCoinId(node.get("id").textValue());
-        cap.setMarketCap(node.get("market_cap").asLong());
+        cap.setMarketCapValue(node.get("market_cap").asLong());
         cap.setFluctuation(node.get("price_change_percentage_24h").floatValue());
         cap.setSymbol(node.get("symbol").textValue());
         cap.setImage(node.get("image").textValue());

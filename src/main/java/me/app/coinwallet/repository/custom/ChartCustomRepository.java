@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChartCustomRepository {
     List<Chart> getAll();
-    Chart getById(MarketCap cap);
+    Chart getByCap(MarketCap cap);
 }

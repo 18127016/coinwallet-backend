@@ -21,6 +21,7 @@ public class WebCustomObjectMapper extends ObjectMapper {
             addDeserializer(Chart.class, new ChartDeserialize());
             addDeserializer(MarketCap.class, new MarketCapDeserialize());
             addDeserializer(TrendJson.class,new TrendDeserialize());
+            addDeserializer(ExchangeRateJson.class, new ExchangeRateDeserialize());
         }
     }
 }

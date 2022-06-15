@@ -1,5 +1,17 @@
 create sequence hibernate_sequence;
-
+create table CHART(
+                      id bigint primary key,
+                      point_list text,
+                      coin_id varchar(50),
+                      version integer default 0
+);
+create table EXCHANGE_RATES(
+                       id bigint primary key,
+                       name varchar(50),
+                       unit varchar(10),
+                       value double precision,
+                       version integer default 0
+);
 create table MARKETCAP(
                           id bigint primary key ,
                           coin_id varchar(50),
@@ -14,20 +26,14 @@ create table MARKETCAP(
                           current_price double precision,
                           market_cap bigint,
                           market_cap_rank integer,
+                          chart bigint,
+                          constraint fk_chart foreign key (chart) references CHART(id),
                               version integer default 0
 );
-create table CHART(
-    id bigint primary key,
-    cap_id bigint,
-    point_list text,
-    size integer,
-    constraint fk_chart foreign key (cap_id) references MARKETCAP (id),
-    version integer default 0
-);
+
 create table TREND(
     id bigint primary key,
-    cap_id bigint,
-    constraint fk_trend foreign key (cap_id) references MARKETCAP(id),
+    coin_id varchar(50),
     version integer default 0
 )
 
