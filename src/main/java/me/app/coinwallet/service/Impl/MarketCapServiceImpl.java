@@ -46,7 +46,7 @@ public class MarketCapServiceImpl implements MarketCapService {
     public HttpUrl url(final String currency,final List<String> ids) {
         HttpUrl.Builder builder = MARKET_CAP_URL.newBuilder();
         builder.addQueryParameter(CURRENCY_QUERY_PARAM, currency);
-        builder.addQueryParameter(ORDER_QUERY_PARAM, "market_cap_desc");
+        builder.addQueryParameter(ORDER_QUERY_PARAM, "market_cap_asc");
         builder.addQueryParameter(PAGE_CAP_QUERY_PARAM, "20");
         builder.addQueryParameter(PAGE_NUM_QUERY_PARAM, "1");
         builder.addQueryParameter(SPARKLINE_QUERY_PARAM, "false");
@@ -174,8 +174,8 @@ public class MarketCapServiceImpl implements MarketCapService {
     }
 
     @Override
-    public List<MarketCap> getAllCap() {
-        return marketCapRepository.getAll();
+    public List<MarketCap> getAllCap(int limit) {
+        return marketCapRepository.getAll(limit);
     }
 
     @Override

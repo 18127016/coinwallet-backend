@@ -5,7 +5,7 @@ import me.app.coinwallet.entity.MarketCap;
 import java.util.List;
 
 public interface MarketCapService {
-    List<MarketCap> getAllCap();
+    List<MarketCap> getAllCap(int limit);
     List<MarketCap> getSomeCap(int count);
     void load();
     void loadTrend();

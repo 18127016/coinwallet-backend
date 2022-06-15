@@ -33,7 +33,7 @@ public class MarketCapController {
 
     @GetMapping("all")
     public ResponseEntity<List<MarketCapDto>> all(){
-        return ResponseEntity.ok(marketCapService.getAllCap().stream()
+        return ResponseEntity.ok(marketCapService.getAllCap(20).stream()
                 .map(marketCapMapper::toMarketCapDto)
                 .collect(Collectors.toList()));
     }
