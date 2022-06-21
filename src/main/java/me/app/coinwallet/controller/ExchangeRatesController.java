@@ -37,4 +37,8 @@ public class ExchangeRatesController {
         return ResponseEntity.ok(exchangeRatesMapper
                     .toExchangeRatesDto(exchangeRateService.getByName(name)));
     }
+    @GetMapping("/load")
+    public void load(){
+        exchangeRateService.load();
+    }
 }

@@ -11,13 +11,13 @@ import java.util.Locale;
 public class ExchangeRatesRepositoryImpl extends AbstractRepositoryImpl<ExchangeRate> implements ExchangeRatesCustomRepository {
     @Override
     public List<String> getListName() {
-        return selectFrom(QExchangeRate.exchangeRate).select(QExchangeRate.exchangeRate.name).fetch();
+        return selectFrom(QExchangeRate.exchangeRate).select(QExchangeRate.exchangeRate.nameCoin).fetch();
     }
 
     @Override
     public ExchangeRate getByName(String name) {
         return selectFrom(QExchangeRate.exchangeRate)
-                .where(QExchangeRate.exchangeRate.name.toLowerCase()
+                .where(QExchangeRate.exchangeRate.nameCoin.toLowerCase()
                         .eq(name.toLowerCase(Locale.ROOT))).fetchFirst();
     }
 }

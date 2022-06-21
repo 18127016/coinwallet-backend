@@ -7,9 +7,9 @@ create table CHART(
 );
 create table EXCHANGE_RATES(
                        id bigint primary key,
-                       name varchar(50),
+                       name_coin varchar(50),
                        unit varchar(10),
-                       value double precision,
+                       value_currency double precision,
                        version integer default 0
 );
 create table MARKETCAP(

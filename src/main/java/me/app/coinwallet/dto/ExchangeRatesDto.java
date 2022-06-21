@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ExchangeRatesDto {
-    String name;
+    String nameCoin;
     String unit;
-    Double value;
+    Double valueCurrency;
 }

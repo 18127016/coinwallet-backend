@@ -11,23 +11,23 @@ import javax.persistence.*;
 @Table(name = "EXCHANGE_RATES")
 public class ExchangeRate extends AbstractEntity {
     @Column
-    String name;
+    String nameCoin;
     @Column
     String unit;
     @Column
-    Double value;
+    Double valueCurrency;
 
     @Id @GeneratedValue
     Long id;
 
-    public ExchangeRate(String name, String unit, Double value) {
-        this.name = name;
+    public ExchangeRate(String nameCoin, String unit, Double valueCurrency) {
+        this.nameCoin = nameCoin;
         this.unit = unit;
-        this.value = value;
+        this.valueCurrency = valueCurrency;
     }
 
-    public ExchangeRate(Long id,String name, String unit, Double value) {
-        this(name, unit, value);
+    public ExchangeRate(Long id, String nameCoin, String unit, Double valueCurrency) {
+        this(nameCoin, unit, valueCurrency);
         this.id=id;
     }
 
