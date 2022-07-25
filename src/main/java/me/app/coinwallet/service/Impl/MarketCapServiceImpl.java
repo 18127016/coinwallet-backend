@@ -148,7 +148,7 @@ public class MarketCapServiceImpl implements MarketCapService {
         getMarketCapFromSource(url("usd",null));
     }
 
-    @Scheduled(fixedRate = 900000)
+
     @Override
     public void loadTrend() {
         getTrendFromSource();

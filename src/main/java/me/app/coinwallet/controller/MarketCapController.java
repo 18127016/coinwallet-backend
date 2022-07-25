@@ -9,6 +9,7 @@ import me.app.coinwallet.service.ChartService;
 import me.app.coinwallet.service.ExchangeRateService;
 import me.app.coinwallet.service.MarketCapService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,7 @@ public class MarketCapController {
                 .collect(Collectors.toList()));
     }
     @GetMapping("loadTrend")
+    @Scheduled(fixedRate = 900000, initialDelay = 120000)
     public void loadTrend(){
         marketCapService.deleteAllTrend();
         marketCapService.loadTrend();
