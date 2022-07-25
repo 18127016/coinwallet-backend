@@ -13,6 +13,7 @@ import me.app.coinwallet.repository.TrendRepository;
 import me.app.coinwallet.service.ChartService;
 import me.app.coinwallet.service.MarketCapService;
 import okhttp3.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class MarketCapServiceImpl implements MarketCapService {
     public HttpUrl url(final String currency,final List<String> ids) {
         HttpUrl.Builder builder = MARKET_CAP_URL.newBuilder();
         builder.addQueryParameter(CURRENCY_QUERY_PARAM, currency);
-        builder.addQueryParameter(ORDER_QUERY_PARAM, "market_cap_asc");
+        builder.addQueryParameter(ORDER_QUERY_PARAM, "market_cap_desc");
         builder.addQueryParameter(PAGE_CAP_QUERY_PARAM, "20");
         builder.addQueryParameter(PAGE_NUM_QUERY_PARAM, "1");
         builder.addQueryParameter(SPARKLINE_QUERY_PARAM, "false");
@@ -104,7 +105,6 @@ public class MarketCapServiceImpl implements MarketCapService {
         final Request.Builder request = new Request.Builder();
         request.url(url);
         final Headers.Builder headers = new Headers.Builder();
-//        headers.add("User-Agent", userAgent);
         headers.add("Accept", MEDIA_TYPE.toString());
         request.headers(headers.build());
         final OkHttpClient.Builder httpClientBuilder = client.newBuilder();
@@ -123,7 +123,6 @@ public class MarketCapServiceImpl implements MarketCapService {
                             if(all.containsKey(cap.getCoinId())){
                                 MarketCap existed = all.get(cap.getCoinId());
                                 existed.update(cap);
-                                System.out.println("counet");
                                 chartService.load(existed);
                             } else {
                                 chartService.load(cap);
@@ -143,17 +142,17 @@ public class MarketCapServiceImpl implements MarketCapService {
         });
     }
 
-
+    @Scheduled(fixedRate = 3600000)
     @Override
     public void load() {
         getMarketCapFromSource(url("usd",null));
     }
 
+    @Scheduled(fixedRate = 900000)
     @Override
     public void loadTrend() {
-//        deleteAllTrend();
         getTrendFromSource();
-//        updateTrendChart();
+
     }
 
     @Override
@@ -169,7 +168,6 @@ public class MarketCapServiceImpl implements MarketCapService {
     @Override
     public void updateTrendChart() {
         List<MarketCap> trends= marketCapRepository.getTrend();
-        System.out.println("size"+trends.size());
         trends.forEach(chartService::load);
     }
 

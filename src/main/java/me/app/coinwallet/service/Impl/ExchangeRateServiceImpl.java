@@ -10,6 +10,7 @@ import me.app.coinwallet.jackson.TrendJson;
 import me.app.coinwallet.repository.ExchangeRatesRepository;
 import me.app.coinwallet.service.ExchangeRateService;
 import okhttp3.*;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,6 +66,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
         });
     }
 
+    @Scheduled(fixedRate = 86400000)
     @Override
     public void load() {
         getExchangeRatesFromSource();
