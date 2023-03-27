@@ -8,6 +8,7 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>jar</packaging>
 	<groupId>me.app</groupId>
 	<artifactId>coinwallet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -16,6 +17,17 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.cloud</groupId>
+				<artifactId>spring-cloud-gcp-dependencies</artifactId>
+				<version>3.3.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
@@ -116,7 +128,11 @@
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
-			<version>1.29.3</version>
+			<version>1.32.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -125,6 +141,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>
+								me.app.coinwallet.CoinwalletApplication
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>

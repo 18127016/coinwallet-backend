@@ -30,21 +30,21 @@ public class WebConfig {
     }
 
 
-    @Bean
-    public BasicDataSource dataSource() throws URISyntaxException {
-        URI dbUri = new URI("postgres://cnvvyssokuxqix:640508c1d6c88b3920f2b3d55e31b6ffd46f1f20ca40487f4c4cec28874be970@ec2-52-204-195-41.compute-1.amazonaws.com:5432/d47n4c075ii89u");
-
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl(dbUrl);
-        basicDataSource.setUsername(username);
-        basicDataSource.setPassword(password);
-
-        return basicDataSource;
-    }
+//    @Bean
+//    public BasicDataSource dataSource() throws URISyntaxException {
+//        URI dbUri = new URI("postgres://cnvvyssokuxqix:640508c1d6c88b3920f2b3d55e31b6ffd46f1f20ca40487f4c4cec28874be970@ec2-52-204-195-41.compute-1.amazonaws.com:5432/d47n4c075ii89u");
+//
+//        String username = dbUri.getUserInfo().split(":")[0];
+//        String password = dbUri.getUserInfo().split(":")[1];
+//        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+//
+//        BasicDataSource basicDataSource = new BasicDataSource();
+//        basicDataSource.setUrl(dbUrl);
+//        basicDataSource.setUsername(username);
+//        basicDataSource.setPassword(password);
+//
+//        return basicDataSource;
+//    }
 
 
     @Bean
