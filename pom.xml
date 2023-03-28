@@ -17,17 +17,6 @@
 	<properties>
 		<java.version>11</java.version>
 	</properties>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>com.google.cloud</groupId>
-				<artifactId>spring-cloud-gcp-dependencies</artifactId>
-				<version>3.3.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
@@ -129,10 +118,6 @@
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
 			<version>1.32.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
 		</dependency>
 	</dependencies>
 

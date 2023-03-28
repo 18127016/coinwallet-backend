@@ -29,22 +29,21 @@ public class WebConfig {
         };
     }
 
+    @Bean
+    public BasicDataSource dataSource() throws URISyntaxException {
+        URI dbUri = new URI("postgresql://usfpxxcuvrstrahx6g1f:XjqlzY59mJ74Skf1F6jkoRBmFDAZqG@bac5nvuyllwv88cfqtbq-postgresql.services.clever-cloud.com:5432/bac5nvuyllwv88cfqtbq");
 
-//    @Bean
-//    public BasicDataSource dataSource() throws URISyntaxException {
-//        URI dbUri = new URI("postgres://cnvvyssokuxqix:640508c1d6c88b3920f2b3d55e31b6ffd46f1f20ca40487f4c4cec28874be970@ec2-52-204-195-41.compute-1.amazonaws.com:5432/d47n4c075ii89u");
-//
-//        String username = dbUri.getUserInfo().split(":")[0];
-//        String password = dbUri.getUserInfo().split(":")[1];
-//        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-//
-//        BasicDataSource basicDataSource = new BasicDataSource();
-//        basicDataSource.setUrl(dbUrl);
-//        basicDataSource.setUsername(username);
-//        basicDataSource.setPassword(password);
-//
-//        return basicDataSource;
-//    }
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+
+        return basicDataSource;
+    }
 
 
     @Bean
